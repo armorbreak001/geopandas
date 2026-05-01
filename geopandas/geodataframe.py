@@ -194,7 +194,7 @@ class GeoDataFrame(GeoPandasBase, DataFrame):
             # Check for multiple columns with name "geometry". If there are,
             # self["geometry"] is a gdf and constructor gets recursively recalled
             # by pandas internals trying to access this
-            if np.sum(np.asarray(self.columns == "geometry")) > 1:
+            if (self.columns == "geometry").sum() > 1:
                 raise ValueError(
                     "GeoDataFrame does not support multiple columns "
                     "using the geometry column name 'geometry'."
@@ -2140,12 +2140,12 @@ default 'snappy'
 
             if (
                 self.columns.nlevels == 1
-                and np.sum(np.asarray(self.columns == self._geometry_column_name)) > 1
+                and (self.columns == self._geometry_column_name).sum() > 1
             ) or (
                 self.columns.nlevels > 1
-                and np.sum(np.asarray(
+                and (
                     self.columns.get_level_values(0) == self._geometry_column_name
-                ))
+                ).sum()
                 > 1
             ):
                 raise ValueError(
